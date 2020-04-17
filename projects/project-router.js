@@ -14,6 +14,21 @@ router.get('/', (req, res) => {
 })
 
 // GET project by id
+router.get('/:id', (req, res) => {
+    const { id } = req.params;
+
+    Projects.findById(id)
+    .then(project => {
+        if (project) {
+            res.json(project)
+        } else {
+            res.status(404).json({ error: 'Could not find project with specified id' })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'Failed to get project' })
+    })
+})
 
 // POST / add new project
 router.post('/', (req, res) => {
@@ -25,6 +40,44 @@ router.post('/', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({ error: 'Failed to create new project' })
+    })
+})
+
+// PUT / update specific project
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+
+    Projects.findById(id)
+    .then(project => {
+        if (project) {
+            Projects.update(changes, id)
+            .then(updated => {
+                res.json(updated)
+            })
+        } else {
+            res.status(404).json({ message: 'Could not find specificed project to update.'})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'Failed to update project' })
+    })
+})
+
+// DELETE specific project
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+
+    Projects.remove(id)
+    .then(deleted => {
+        if (deleted) {
+            res.json({ removed: deleted })
+        } else {
+            res.status(404).json({ message: 'Could not find project to delete' })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'Failed to delete project' })
     })
 })
 

@@ -40,7 +40,7 @@ exports.up = function(knex) {
             .references('id')
             .inTable('projects')
             .onUpdate('CASCADE')
-            .onDelete('RESTRICT');
+            .onDelete('CASCADE');
         //resource_id, foreign key to resource table, required
         tbl.integer('resource_id')
             .unsigned()
@@ -48,7 +48,7 @@ exports.up = function(knex) {
             .references('id')
             .inTable('resources')
             .onUpdate('CASCADE')
-            .onDelete('RESTRICT');
+            .onDelete('CASCADE');
         //quantity, integer, notNullable, possibly default to 1
         tbl.integer('quantity')
             .notNullable()
@@ -77,7 +77,7 @@ exports.up = function(knex) {
             .references('id')
             .inTable('projects')
             .onUpdate('CASCADE')
-            .onDelete('RESTRICT');
+            .onDelete('CASCADE');
     })
 };
 
